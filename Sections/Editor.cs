@@ -6,4 +6,9 @@ public class Editor
     public int BeatDivisor { get; set; }
     public int GridSize { get; set; }
     public decimal TimelineZoom { get; set; }
+    
+    public static void Read(OsuFormatReader reader, Editor outobj)
+    {
+       
+    }
 }

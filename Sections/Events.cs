@@ -20,9 +20,19 @@ public class Events
     {
         return _events.Find(e => e.eventType == eventType);
     }
+    
+    public List<IEvent> GetEventsList() 
+    {
+        return _events;
+    }
 
     private bool eventTypeExists(IEvent otherEvent)
     {
         return _events.Any(e => e.eventType == otherEvent.eventType);
+    }
+    
+    public static void Read(OsuFormatReader reader, Events outobj)
+    {
+       
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace OsuFormatReader.Sections.HitObjectTypes.ObjectParamsTypes;
 
-public class SpinnerParams
+public class HoldParams
 {
     public int endTime { get; set; }
 }

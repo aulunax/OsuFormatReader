@@ -18,5 +18,10 @@ public class Metadata
             return null;
         
         return Tags.Split(' ').ToList();;
-    } 
+    }
+    
+    public static void Read(OsuFormatReader reader, Metadata outobj)
+    {
+       
+    }
 }
