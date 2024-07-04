@@ -1,7 +1,7 @@
-﻿# OsuFormatReader
+﻿# OsuFormatReader (WIP)
 
-For reading .osu beatmap files
+For reading .osu beatmap files into c# objects
 
-### Currently lacking:
+### Current issues:
+- Doesn't work yet
 - Storyboards are ignored
-- Colours section is ignored
