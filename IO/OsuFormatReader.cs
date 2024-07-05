@@ -1,16 +1,24 @@
 ﻿namespace OsuFormatReader;
 
-public class OsuFormatReader
+public class OsuFormatReader : IDisposable
 {
     private readonly StreamReader _reader;
     public SectionType SectionType { get; private set; } = SectionType.None;
 
-    public OsuFormatReader(StreamReader reader)
+    public OsuFormatReader(Stream stream)
     {
-        _reader = reader;
+        _reader = new StreamReader(stream);
     }
 
     public bool IsAtEnd { get; private set; } = false;
+
+    public string? TryReadKeyValuePair(out string? value)
+    {
+        string? key = null;
+        bool success = TryReadKeyValuePair<string>(out key, out value, s => s);
+        value = success ? value : (string?)null;
+        return key;
+    }
 
     public string? ReadLine()
     {
@@ -27,7 +35,7 @@ public class OsuFormatReader
         if (line.StartsWith("["))
         {
             string sectionString = line.Substring(1,line.Length-2);
-            SectionType sectionType = SectionTypeExtensions.ToSectionType(sectionString);
+            SectionType = SectionTypeExtensions.ToSectionType(sectionString);
         }
 
         return line;
@@ -57,42 +65,6 @@ public class OsuFormatReader
         return key;
     }
 
-    public string? ReadKeyStringValuePair(out string? value)
-    {
-        string? key = null;
-        bool success = TryReadKeyValuePair(out key, out string stringValue, s => s);
-        value = success ? stringValue : null;
-        return key;
-    }
-
-    public string? ReadKeyIntListValuePair(out List<int>? value)
-    {
-        string? key = null;
-        bool success = TryReadKeyValuePair(out key, out List<int> listValue, ParseCommaSeparatedIntegers);
-        value = success ? listValue : null;
-        return key;
-    }
-
-    private List<int> ParseCommaSeparatedIntegers(string input)
-    {
-        var result = new List<int>();
-        var parts = input.Split(',');
-
-        foreach (var part in parts)
-        {
-            if (int.TryParse(part.Trim(), out int number))
-            {
-                result.Add(number);
-            }
-            else
-            {
-                throw new FormatException($"Unable to parse '{part}' as an integer.");
-            }
-        }
-
-        return result;
-    }
-
     private bool TryReadKeyValuePair<T>(out string? key, out T? value, Func<string, T> parseFunc)
     {
         value = default;
@@ -117,5 +89,10 @@ public class OsuFormatReader
     {
         while (SectionType == SectionType.None)
             ReadLine();
+    }
+
+    public void Dispose()
+    {
+        _reader.Dispose();
     }
 }

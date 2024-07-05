@@ -1,4 +1,6 @@
-﻿namespace OsuFormatReader.Sections;
+﻿using OsuFormatReader.IO;
+
+namespace OsuFormatReader.Sections;
 public class Difficulty
 {
     public decimal HPDrainRate { get; set; }
@@ -8,8 +10,16 @@ public class Difficulty
     public decimal SliderMultiplier { get; set; }
     public decimal SliderTickRate { get; set; }
     
-    public static void Read(OsuFormatReader reader, Difficulty outobj)
+    public static Difficulty Read(OsuFormatReader reader, Difficulty? outobj = null)
     {
-       
+        if (outobj is null)
+            outobj = new Difficulty();
+
+        while (!reader.IsAtEnd && reader.SectionType == SectionType.Difficulty)
+        {
+            KeyValueReader.ReadAndUpdate(reader, outobj);
+        }
+
+        return outobj;
     }
 }

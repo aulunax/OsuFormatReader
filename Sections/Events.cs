@@ -31,8 +31,9 @@ public class Events
         return _events.Any(e => e.eventType == otherEvent.eventType);
     }
     
-    public static void Read(OsuFormatReader reader, Events outobj)
+    public static Events Read(OsuFormatReader reader, Events? outobj = null)
     {
-       
+        reader.ReadLine();
+        return null;
     }
 }

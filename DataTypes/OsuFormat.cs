@@ -27,7 +27,7 @@ public class OsuFormat
     
     private OsuFormat() { }
 
-    public static OsuFormat Read(OsuFormatReader reader, OsuFormat outobj = null)
+    public static OsuFormat Read(OsuFormatReader reader, OsuFormat? outobj = null)
     {
         if (outobj is null)
             outobj = new OsuFormat();
@@ -46,21 +46,21 @@ public class OsuFormat
     {
         switch (sectionType)
         {
-            case SectionType.General: General.Read(reader, outobj.General);
+            case SectionType.General: outobj.General = General.Read(reader);
                 break;
-            case SectionType.Editor: Editor.Read(reader, outobj.Editor);
+            case SectionType.Editor: outobj.Editor = Editor.Read(reader);
                 break;
-            case SectionType.Metadata: Metadata.Read(reader, outobj.Metadata);
+            case SectionType.Metadata: outobj.Metadata = Metadata.Read(reader);
                 break;
-            case SectionType.Difficulty: Difficulty.Read(reader, outobj.Difficulty);
+            case SectionType.Difficulty: outobj.Difficulty = Difficulty.Read(reader);
                 break;
-            case SectionType.Events: Events.Read(reader, outobj.Events);
+            case SectionType.Events: outobj.Events = Events.Read(reader);
                 break;
-            case SectionType.TimingPoints: TimingPoints.Read(reader, outobj.TimingPoints);
+            case SectionType.TimingPoints: outobj.TimingPoints = TimingPoints.Read(reader);
                 break;
-            case SectionType.Colours: Colours.Read(reader, outobj.Colours);
+            case SectionType.Colours: outobj.Colours = Colours.Read(reader);
                 break;
-            case SectionType.HitObjects: HitObjects.Read(reader, outobj.HitObjects);
+            case SectionType.HitObjects: outobj.HitObjects = HitObjects.Read(reader);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(sectionType), sectionType, null);

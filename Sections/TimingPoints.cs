@@ -6,8 +6,10 @@ public class TimingPoints
 {
     private List<TimingPoint> _timingPoints = new List<TimingPoint>();
     
-    public static void Read(OsuFormatReader reader, TimingPoints outobj)
+    public static TimingPoints Read(OsuFormatReader reader, TimingPoints? outobj = null)
     {
-       
+        reader.ReadLine();
+        return null;
+
     }
 }

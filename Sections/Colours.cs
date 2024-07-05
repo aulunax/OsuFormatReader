@@ -16,8 +16,18 @@ public class Colours
         }
     }
     
-    public static void Read(OsuFormatReader reader, Colours outobj)
+    public static Colours Read(OsuFormatReader reader, Colours? outobj = null)
     {
-       
+        if (outobj is null)
+            outobj = new Colours();
+
+        while (!reader.IsAtEnd && reader.SectionType == SectionType.Colours)
+        {
+            string? value;
+            string? key = reader.TryReadKeyValuePair(out value);
+        }
+
+        return outobj;
+
     }
 }

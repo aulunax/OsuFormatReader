@@ -1,4 +1,7 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+using OsuFormatReader.IO;
+using OsuFormatReader.Utils;
 
 namespace OsuFormatReader.Sections;
 
@@ -24,17 +27,16 @@ public class General
     public bool WidescreenStoryboard { get; set; } = false;
     public bool SamplesMatchPlaybackRate { get; set; } = false;
 
-    public static void Read(OsuFormatReader reader, General outobj = null)
+    public static General Read(OsuFormatReader reader, General? outobj = null)
     {
         if (outobj is null)
             outobj = new General();
-        
-        
-        PropertyInfo[] properties = typeof(General).GetProperties();
 
-        foreach (PropertyInfo property in properties)
+        while (!reader.IsAtEnd && reader.SectionType == SectionType.General)
         {
-            Console.WriteLine($"Property Name: {property.Name}, Property Type: {property.PropertyType}");
+            KeyValueReader.ReadAndUpdate(reader, outobj);
         }
+
+        return outobj;
     }
 }

@@ -16,8 +16,9 @@ public class HitObjects
         return _hitObjects;
     }
     
-    public static void Read(OsuFormatReader reader, HitObjects outobj)
+    public static HitObjects Read(OsuFormatReader reader, HitObjects? outobj = null)
     {
-       
+        reader.ReadLine();
+        return null;
     }
 }

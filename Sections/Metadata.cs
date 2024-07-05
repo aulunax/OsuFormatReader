@@ -1,4 +1,6 @@
-﻿namespace OsuFormatReader.Sections;
+﻿using OsuFormatReader.IO;
+
+namespace OsuFormatReader.Sections;
 public class Metadata
 {
     public string Title { get; set; }
@@ -20,8 +22,16 @@ public class Metadata
         return Tags.Split(' ').ToList();;
     }
     
-    public static void Read(OsuFormatReader reader, Metadata outobj)
+    public static Metadata Read(OsuFormatReader reader, Metadata? outobj = null)
     {
-       
+        if (outobj is null)
+            outobj = new Metadata();
+
+        while (!reader.IsAtEnd && reader.SectionType == SectionType.Metadata)
+        {
+            KeyValueReader.ReadAndUpdate(reader, outobj);
+        }
+
+        return outobj;
     }
 }
