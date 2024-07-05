@@ -1,8 +1,10 @@
-﻿namespace OsuFormatReader.Interfaces;
+﻿using OsuFormatReader.Enums;
+
+namespace OsuFormatReader.Interfaces;
 
 public interface IEvent
 {
-    int eventType { get; }
+    EventType eventType { get; }
     int startTime { get; set; }
     object eventParams { get; set; }
 }

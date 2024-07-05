@@ -1,12 +1,18 @@
-﻿using OsuFormatReader.Sections.EventTypes.EventParamsTypes;
+﻿using OsuFormatReader.Enums;
+using OsuFormatReader.Sections.EventTypes.EventParamsTypes;
 using OsuFormatReader.Interfaces;
 
 namespace OsuFormatReader.Sections.EventTypes;
 
-public class BackgroundsEvent(int startTime, BackgroundsEventParams eventParams) : IEvent<BackgroundsEventParams>
+public class BackgroundsEvent : IEvent<BackgroundsEventParams>
 {
-    public int eventType { get; } = 0;
+    public BackgroundsEvent(BackgroundsEventParams eventParams)
+    {
+        this.eventParams = eventParams;
+    }
 
-    public int startTime { get; set; } = startTime;
-    public BackgroundsEventParams eventParams { get; set; } = eventParams;
+    public EventType eventType { get; } = EventType.Background;
+
+    public int startTime { get; set; } = 0;
+    public BackgroundsEventParams eventParams { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using OsuFormatReader.IO;
-using OsuFormatReader.Utils;
+using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
 

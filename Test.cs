@@ -9,13 +9,12 @@ public class Test
 {
     public static void Main()
     {
-        using (OsuFormatReader reader = new OsuFormatReader(new FileStream("Nekomata.osu", FileMode.Open)))
+        using (OsuFormatReader reader = new OsuFormatReader(new FileStream("okaeri.osu", FileMode.Open)))
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             
             OsuFormat osuFormat = OsuFormat.Read(reader);
-            Console.WriteLine(osuFormat.Metadata.ArtistUnicode);
             
             stopwatch.Stop();
             TimeSpan timeTaken = stopwatch.Elapsed;

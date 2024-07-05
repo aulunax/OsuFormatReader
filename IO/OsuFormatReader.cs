@@ -32,37 +32,18 @@ public class OsuFormatReader : IDisposable
 
         line = line.Trim();
         
-        if (line.StartsWith("["))
+        if (line.StartsWith("//"))
+        {
+            line = null;
+        }
+        else if (line.StartsWith("["))
         {
             string sectionString = line.Substring(1,line.Length-2);
             SectionType = SectionTypeExtensions.ToSectionType(sectionString);
         }
 
+
         return line;
-    }
-
-    public string? ReadKeyIntValuePair(out int? value)
-    {
-        string? key = null;
-        bool success = TryReadKeyValuePair(out key, out int intValue, int.Parse);
-        value = success ? intValue : (int?)null;
-        return key;
-    }
-
-    public string? ReadKeyDecimalValuePair(out decimal? value)
-    {
-        string? key = null;
-        bool success = TryReadKeyValuePair(out key, out decimal decimalValue, decimal.Parse);
-        value = success ? decimalValue : (decimal?)null;
-        return key;
-    }
-
-    public string? ReadKeyBoolValuePair(out bool? value)
-    {
-        string? key = null;
-        bool success = TryReadKeyValuePair(out key, out bool boolValue, bool.Parse);
-        value = success ? boolValue : (bool?)null;
-        return key;
     }
 
     private bool TryReadKeyValuePair<T>(out string? key, out T? value, Func<string, T> parseFunc)

@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using OsuFormatReader.Enums;
-using OsuFormatReader.Utils;
+using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.IO;
 
@@ -11,6 +12,11 @@ public class KeyValueReader
         string? value;
         string? varName = reader.TryReadKeyValuePair(out value);
         
+        return Update(varName, value, outobj);
+    }
+    
+    public static T? Update<T>(string? varName, string? value, T outobj) where T : class
+    {
         PropertyInfo[] properties = typeof(T).GetProperties();
 
         PropertyInfo? property;
@@ -25,9 +31,6 @@ public class KeyValueReader
         
         if (varName is null || value is null || property is null)
             return null;
-        
-        Console.WriteLine($"Property Name: {property.Name}, Property Type: {property.PropertyType}");
-        Console.WriteLine($"Property New Value: {value}");
 
         if (property.PropertyType == typeof(int))
             property.SetValue(outobj, int.Parse(value));
@@ -42,7 +45,7 @@ public class KeyValueReader
         else if (property.PropertyType == typeof(Colour))
             property.SetValue(outobj, ValueParser.ParseColour(value));
         else
-            Console.WriteLine($"Unknown type\n");
+            Debug.WriteLine($"Unknown type in KeyValueReader.Update\n");
         
 
         return outobj;
