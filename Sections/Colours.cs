@@ -47,7 +47,7 @@ public class Colours
 
             if (key == "SliderTrackOverride" || key == "SliderBorder")
             {
-                KeyValueReader.Update(key, value, outobj);
+                KeyValueReader.UpdateProperty(key, value, outobj);
             }
             else if (comboColourRegex.IsMatch(key))
             {

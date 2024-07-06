@@ -16,7 +16,7 @@ public class Editor
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Editor)
         {
-            KeyValueReader.ReadAndUpdate(reader, outobj);
+            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;

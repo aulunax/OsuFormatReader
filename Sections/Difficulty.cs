@@ -17,7 +17,7 @@ public class Difficulty
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Difficulty)
         {
-            KeyValueReader.ReadAndUpdate(reader, outobj);
+            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;

@@ -34,7 +34,7 @@ public class General
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.General)
         {
-            KeyValueReader.ReadAndUpdate(reader, outobj);
+            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;

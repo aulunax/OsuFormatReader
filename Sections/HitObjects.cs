@@ -1,4 +1,5 @@
 ﻿using OsuFormatReader.Interfaces;
+using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
 
@@ -18,7 +19,24 @@ public class HitObjects
     
     public static HitObjects Read(OsuFormatReader reader, HitObjects? outobj = null)
     {
-        reader.ReadLine();
-        return null;
+        if (outobj is null)
+            outobj = new HitObjects();
+
+        while (!reader.IsAtEnd && reader.SectionType == SectionType.HitObjects)
+        {
+            string? line = reader.ReadLine();
+
+            if (line is null)
+                continue;
+            
+            IHitObject? newHitObject = HitObjectParser.ParseHitObject(line);
+            
+            if (newHitObject is null)
+                continue;
+            
+            outobj.AddHitObject(newHitObject);
+        }
+
+        return outobj;
     }
 }

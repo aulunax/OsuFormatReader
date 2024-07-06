@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using OsuFormatReader.Enums;
 using OsuFormatReader.Parsers;
@@ -7,15 +8,18 @@ namespace OsuFormatReader.IO;
 
 public class KeyValueReader
 {
-    public static T? ReadAndUpdate<T>(OsuFormatReader reader, T outobj) where T : class
+    public static T? ReadAndUpdateProperty<T>(OsuFormatReader reader, T? outobj = null) where T : class, new()
     {
+        if (outobj is null)
+            outobj = new T();
+        
         string? value;
         string? varName = reader.TryReadKeyValuePair(out value);
         
-        return Update(varName, value, outobj);
+        return UpdateProperty(varName, value, outobj);
     }
     
-    public static T? Update<T>(string? varName, string? value, T outobj) where T : class
+    public static T? UpdateProperty<T>(string? varName, string? value, T outobj) where T : class
     {
         PropertyInfo[] properties = typeof(T).GetProperties();
 
@@ -39,9 +43,9 @@ public class KeyValueReader
         else if (property.PropertyType == typeof(string))
             property.SetValue(outobj, value);
         else if (property.PropertyType == typeof(decimal))
-            property.SetValue(outobj, decimal.Parse(value.Replace('.',',')));  // TODO: Fix smth with Culture
+            property.SetValue(outobj, decimal.Parse(value, CultureInfo.InvariantCulture));
         else if (property.PropertyType == typeof(List<int>)) 
-            property.SetValue(outobj, ValueParser.ParseCommaSeparatedIntegers(value));
+            property.SetValue(outobj, ValueParser.ParseDelimitedIntegers(value));
         else if (property.PropertyType == typeof(Colour))
             property.SetValue(outobj, ValueParser.ParseColour(value));
         else

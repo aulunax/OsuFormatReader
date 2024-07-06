@@ -13,6 +13,8 @@ public class TimingPoint
     public bool uninherited  { get; set; }
     public Effects effects  { get; set; }
 
+    public TimingPoint() { }
+
     public TimingPoint(int time, decimal beatLength, int meter, int sampleSet, int sampleIndex, int volume, bool uninherited, Effects effects)
     {
         this.time = time;

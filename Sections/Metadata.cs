@@ -29,7 +29,7 @@ public class Metadata
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Metadata)
         {
-            KeyValueReader.ReadAndUpdate(reader, outobj);
+            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;

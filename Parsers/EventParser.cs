@@ -10,7 +10,7 @@ public class EventParser
     public static IEvent? ParseEvent(string value)
     {
         IEvent? returnEvent;
-        List<string> eventInfo = ValueParser.ParseCommaSeparatedStrings(value, 3);
+        List<string> eventInfo = ValueParser.ParseDelimitedStrings(value, 3);
         EventType type;
         if (int.TryParse(eventInfo[0], out int intType))
         {
@@ -53,7 +53,7 @@ public class EventParser
 
     public static BackgroundsEventParams ParseBackgroundsEventParams(string value)
     {
-        List<string> eventParams = ValueParser.ParseCommaSeparatedStrings(value,3);
+        List<string> eventParams = ValueParser.ParseDelimitedStrings(value,3);
         
         if (int.TryParse(eventParams[1], out int xOffset) && int.TryParse(eventParams[2], out int yOffset))
         {
@@ -64,7 +64,7 @@ public class EventParser
     
     public static VideosEventParams ParseVideosEventParams(string value)
     {
-        List<string> eventParams = ValueParser.ParseCommaSeparatedStrings(value,3);
+        List<string> eventParams = ValueParser.ParseDelimitedStrings(value,3);
         
         if (int.TryParse(eventParams[1], out int xOffset) && int.TryParse(eventParams[2], out int yOffset))
         {

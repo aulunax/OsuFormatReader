@@ -7,7 +7,7 @@ public class HitSample
     public int index { get; set; }
     public int volume { get; set; }
     public string filename { get; set; }
-
+    
     public HitSample(int normalSet = 0, int additionSet = 0, int index = 0, int volume = 0, string filename = null)
     {
         this.normalSet = normalSet;

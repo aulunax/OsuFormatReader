@@ -3,8 +3,7 @@
 For reading .osu beatmap files into c# objects
 
 ### Curently works:
-- Reading General, Difficulty, Metadata, Editor and Events sections (5/7)
+- Reading General, Difficulty, Metadata, Editor, Events, TimingPoints and (almost) HitObjects sections (6.5/7)
 
-
-### Current issues:
-- Storyboards are ignored
+### Currently lacks:
+- Storyboard reading support (they are simply ignored)
