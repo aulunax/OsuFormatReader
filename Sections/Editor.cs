@@ -1,4 +1,5 @@
-﻿using OsuFormatReader.IO;
+﻿
+using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
 public class Editor
@@ -16,7 +17,7 @@ public class Editor
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Editor)
         {
-            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
+            KeyValueParser.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;

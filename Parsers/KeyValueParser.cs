@@ -4,9 +4,9 @@ using System.Reflection;
 using OsuFormatReader.Enums;
 using OsuFormatReader.Parsers;
 
-namespace OsuFormatReader.IO;
+namespace OsuFormatReader.Parsers;
 
-public class KeyValueReader
+internal static class KeyValueParser
 {
     public static T? ReadAndUpdateProperty<T>(OsuFormatReader reader, T? outobj = null) where T : class, new()
     {

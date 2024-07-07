@@ -5,7 +5,7 @@ using OsuFormatReader.Sections.EventTypes.EventParamsTypes;
 
 namespace OsuFormatReader.Parsers;
 
-public class EventParser
+internal class EventParser
 {
     public static IEvent? ParseEvent(string value)
     {
@@ -55,6 +55,9 @@ public class EventParser
     {
         List<string> eventParams = ValueParser.ParseDelimitedStrings(value,3);
         
+        if (eventParams.Count == 1)
+            return new BackgroundsEventParams(eventParams[0]);
+        
         if (int.TryParse(eventParams[1], out int xOffset) && int.TryParse(eventParams[2], out int yOffset))
         {
             return new BackgroundsEventParams(eventParams[0], xOffset, yOffset);
@@ -65,6 +68,9 @@ public class EventParser
     public static VideosEventParams ParseVideosEventParams(string value)
     {
         List<string> eventParams = ValueParser.ParseDelimitedStrings(value,3);
+
+        if (eventParams.Count == 1)
+            return new VideosEventParams(eventParams[0]);
         
         if (int.TryParse(eventParams[1], out int xOffset) && int.TryParse(eventParams[2], out int yOffset))
         {

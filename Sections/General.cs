@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
-using OsuFormatReader.IO;
 using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
@@ -34,7 +33,7 @@ public class General
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.General)
         {
-            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
+            KeyValueParser.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;

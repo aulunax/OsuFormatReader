@@ -6,7 +6,7 @@ public class VideosEventParams
     public int xOffset  { get; set; }
     public int yOffset  { get; set; }
 
-    public VideosEventParams(string filename, int xOffset, int yOffset)
+    public VideosEventParams(string filename, int xOffset=0, int yOffset=0)
     {
         this.filename = filename;
         this.xOffset = xOffset;

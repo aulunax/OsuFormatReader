@@ -6,7 +6,7 @@ using OsuFormatReader.Sections.EventTypes;
 
 namespace OsuFormatReader.Parsers;
 
-public class ValueParser
+internal class ValueParser
 {
     /// <summary>
     /// This method splits a string into integers based on the specified delimiter and returns a list of those integers.
@@ -19,16 +19,20 @@ public class ValueParser
     {
         var result = new List<int>();
         var parts = value.Split(delimiter);
-
+        
         foreach (var part in parts)
         {
-            if (int.TryParse(part.Trim(), out int number))
+            if (part == String.Empty)
+            {
+                continue;
+            }
+            else if (int.TryParse(part.Trim(), out int number))
             {
                 result.Add(number);
             }
             else
             {
-                throw new FormatException($"Unable to parse '{part}' as an integer.");
+                throw new FormatException($"Unable to parse '{part}' from '{parts}' of size '{parts.Length}' as an integer.");
             }
         }
 
@@ -104,8 +108,10 @@ public class ValueParser
         if (parts.Count != 8)
             return null;
         
-        if (int.TryParse(parts[0], out int time) &&
-            decimal.TryParse(parts[1], CultureInfo.InvariantCulture, out decimal beatLength) &&
+        // time as double is allowed i guess e.g.
+        // https://osu.ppy.sh/beatmapsets/107763#osu/282251
+        if (double.TryParse(parts[0], CultureInfo.InvariantCulture, out double time) &&
+            double.TryParse(parts[1], CultureInfo.InvariantCulture, out double beatLength) &&
             int.TryParse(parts[2], out int meter) &&
             int.TryParse(parts[3], out int sampleSet) &&
             int.TryParse(parts[4], out int sampleIndex) &&
@@ -114,7 +120,7 @@ public class ValueParser
             int.TryParse(parts[7], out int effects)
            )
         {
-            return new TimingPoint(time, beatLength, meter, sampleSet, sampleIndex, volume, uninherited != 0, (Effects)effects);
+            return new TimingPoint((int)time, beatLength, meter, sampleSet, sampleIndex, volume, uninherited != 0, (Effects)effects);
         }
         return null;
     }

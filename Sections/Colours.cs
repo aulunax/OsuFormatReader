@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.Text.RegularExpressions;
 using OsuFormatReader.Enums;
-using OsuFormatReader.IO;
 using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
@@ -47,7 +46,7 @@ public class Colours
 
             if (key == "SliderTrackOverride" || key == "SliderBorder")
             {
-                KeyValueReader.UpdateProperty(key, value, outobj);
+                KeyValueParser.UpdateProperty(key, value, outobj);
             }
             else if (comboColourRegex.IsMatch(key))
             {

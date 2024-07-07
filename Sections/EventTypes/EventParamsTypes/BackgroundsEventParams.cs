@@ -6,7 +6,7 @@ public class BackgroundsEventParams
     public int xOffset  { get; set; }
     public int yOffset  { get; set; }
     
-    public BackgroundsEventParams(string filename, int xOffset, int yOffset)
+    public BackgroundsEventParams(string filename, int xOffset=0, int yOffset=0)
     {
         this.filename = filename;
         this.xOffset = xOffset;

@@ -1,4 +1,5 @@
-﻿using OsuFormatReader.IO;
+﻿
+using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
 public class Difficulty
@@ -17,7 +18,7 @@ public class Difficulty
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Difficulty)
         {
-            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
+            KeyValueParser.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;

@@ -1,5 +1,4 @@
 ﻿using OsuFormatReader.DataTypes;
-using OsuFormatReader.IO;
 using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;

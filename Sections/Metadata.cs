@@ -1,4 +1,4 @@
-﻿using OsuFormatReader.IO;
+﻿using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
 public class Metadata
@@ -29,7 +29,7 @@ public class Metadata
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Metadata)
         {
-            KeyValueReader.ReadAndUpdateProperty(reader, outobj);
+            KeyValueParser.ReadAndUpdateProperty(reader, outobj);
         }
 
         return outobj;
