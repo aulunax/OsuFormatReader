@@ -1,11 +1,13 @@
 ﻿using OsuFormatReader.DataTypes;
+using OsuFormatReader.Enums;
+using OsuFormatReader.IO;
 using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
 
 public class TimingPoints
 {
-    private List<TimingPoint> _timingPoints = new List<TimingPoint>();
+    private readonly List<TimingPoint> _timingPoints = new List<TimingPoint>();
 
     public List<TimingPoint> GetTimingPoints()
     {
@@ -16,25 +18,26 @@ public class TimingPoints
     {
         _timingPoints.Add(timingPoint);
     }
-    
-    public static TimingPoints Read(OsuFormatReader reader, TimingPoints? outobj = null)
-    {
 
+    public static TimingPoints Read(OsuFormatStreamReader reader, TimingPoints? outobj = null)
+    {
         if (outobj is null)
             outobj = new TimingPoints();
 
+        reader.ReadUntilSection(SectionType.TimingPoints);
+        
         while (!reader.IsAtEnd && reader.SectionType == SectionType.TimingPoints)
         {
-            string? line = reader.ReadLine();
+            var line = reader.ReadParsedLine();
 
             if (line is null)
                 continue;
-            
-            TimingPoint? newTimingPoint = ValueParser.ParseTimingPoint(line);
-            
+
+            var newTimingPoint = ValueParser.ParseTimingPoint(line, reader.FormatVersion);
+
             if (newTimingPoint is null)
                 continue;
-            
+
             outobj.AddTimingPoint(newTimingPoint);
         }
 

@@ -7,16 +7,10 @@ namespace OsuFormatReader.Sections.HitObjectTypes;
 
 public class Hold : IHitObject<HoldParams>
 {
-    public const int DEFAULT_Y = 192;
-    public int x { get; set; }
-    public int y { get; set; }
-    public int time { get; set; }
-    public HitObjectType type { get; set; }
-    public HitSound hitSound { get; set; }
-    public HoldParams objectParams { get; set; }
-    public HitSample hitSample { get; set; }
+    private const int DEFAULT_Y = 192;
 
-    public Hold(int x, int y, int time, HitObjectType type, HitSound hitSound, HoldParams objectParams, HitSample hitSample)
+    public Hold(int x, int y, int time, HitObjectType type, HitSound hitSound, HoldParams objectParams,
+        HitSample hitSample)
     {
         this.x = x;
         this.y = DEFAULT_Y;
@@ -26,4 +20,12 @@ public class Hold : IHitObject<HoldParams>
         this.objectParams = objectParams;
         this.hitSample = hitSample;
     }
+
+    public int x { get; set; }
+    public int y { get; set; }
+    public int time { get; set; }
+    public HitObjectType type { get; set; }
+    public HitSound hitSound { get; set; }
+    public HoldParams objectParams { get; set; }
+    public HitSample hitSample { get; set; }
 }

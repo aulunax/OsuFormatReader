@@ -2,10 +2,10 @@
 
 public class BreaksEventParams
 {
-    public int endTime { get; set; }
-
     public BreaksEventParams(int endTime)
     {
         this.endTime = endTime;
     }
+
+    public int endTime { get; set; }
 }

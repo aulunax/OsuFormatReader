@@ -1,6 +1,4 @@
-﻿using OsuFormatReader.Sections;
-
-namespace OsuFormatReader;
+﻿namespace OsuFormatReader.Enums;
 
 public enum SectionType : byte
 {

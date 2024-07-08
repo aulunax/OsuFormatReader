@@ -20,7 +20,7 @@ public static class EventTypeExtensions
             default: return EventType.Unknown;
         }
     }
-    
+
     public static EventType IntToEventType(int eventType)
     {
         switch (eventType)

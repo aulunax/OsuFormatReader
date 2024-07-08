@@ -14,5 +14,3 @@ public enum HitObjectType : byte
     ColourHaxMask = ColourHaxHighDigit | ColourHaxMidDigit | ColourHaxLowDigit,
     ObjectTypeMask = HitCircle | Slider | Spinner
 }
-
-

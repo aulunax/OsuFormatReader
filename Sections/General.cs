@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using OsuFormatReader.Enums;
+using OsuFormatReader.IO;
 using OsuFormatReader.Parsers;
 
 namespace OsuFormatReader.Sections;
@@ -26,15 +26,15 @@ public class General
     public bool WidescreenStoryboard { get; set; } = false;
     public bool SamplesMatchPlaybackRate { get; set; } = false;
 
-    public static General Read(OsuFormatReader reader, General? outobj = null)
+    public static General Read(OsuFormatStreamReader reader, General? outobj = null)
     {
         if (outobj is null)
             outobj = new General();
 
+        reader.ReadUntilSection(SectionType.General);
+        
         while (!reader.IsAtEnd && reader.SectionType == SectionType.General)
-        {
             KeyValueParser.ReadAndUpdateProperty(reader, outobj);
-        }
 
         return outobj;
     }

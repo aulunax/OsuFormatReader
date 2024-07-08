@@ -1,6 +1,6 @@
 ﻿using OsuFormatReader.Enums;
-using OsuFormatReader.Sections.EventTypes.EventParamsTypes;
 using OsuFormatReader.Interfaces;
+using OsuFormatReader.Sections.EventTypes.EventParamsTypes;
 
 namespace OsuFormatReader.Sections.EventTypes;
 
