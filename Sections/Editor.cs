@@ -18,7 +18,7 @@ public class Editor
             outobj = new Editor();
 
         reader.ReadUntilSection(SectionType.Editor);
-        
+
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Editor)
             KeyValueParser.ReadAndUpdateProperty(reader, outobj);
 

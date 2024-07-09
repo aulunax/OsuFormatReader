@@ -19,9 +19,11 @@ public class Difficulty
             outobj = new Difficulty();
 
         reader.ReadUntilSection(SectionType.Difficulty);
-        
+
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Difficulty)
+        {
             KeyValueParser.ReadAndUpdateProperty(reader, outobj);
+        }
 
         if (reader.FormatVersion < 9)
             outobj.ApproachRate = outobj.OverallDifficulty;

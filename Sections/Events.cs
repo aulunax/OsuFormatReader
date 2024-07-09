@@ -30,7 +30,7 @@ public class Events
             outobj = new Events();
 
         reader.ReadUntilSection(SectionType.Events);
-        
+
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Events)
         {
             var line = reader.ReadParsedLine();
@@ -38,12 +38,23 @@ public class Events
             if (line is null)
                 continue;
 
-            var newEvent = EventParser.ParseEvent(line);
+            try
+            {
+                var newEvent = EventParser.ParseEvent(line);
 
-            if (newEvent is null)
-                continue;
+                if (newEvent is null)
+                {
+                    // Unrecognized event (most likely storyboard)
+                    // reader.ReportParserError($"Invalid event");
+                    continue;
+                }
 
-            outobj.AddEvent(newEvent);
+                outobj.AddEvent(newEvent);
+            }
+            catch (FormatException e)
+            {
+                reader.ReportParserError(e.Message);
+            }
         }
 
         return outobj;

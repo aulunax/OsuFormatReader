@@ -16,25 +16,42 @@ internal static class KeyValueParser
         string? value;
         var varName = reader.TryReadKeyValuePair(out value);
 
-        return UpdateProperty(varName, value, outobj);
+        if (varName is null)
+            return outobj;
+
+        try
+        {
+            return UpdateProperty<T>(varName, value, outobj);
+        }
+        catch (FormatException e)
+        {
+            reader.ReportParserError(e.Message);
+        }
+
+
+        return outobj;
     }
 
-    public static T? UpdateProperty<T>(string? varName, string? value, T outobj) where T : class
+    public static T UpdateProperty<T>(string? varName, string? value, T outobj) where T : class
     {
+        if (varName is null)
+            return outobj;
+
         var properties = typeof(T).GetProperties();
 
         PropertyInfo? property;
         try
         {
-            property = properties.First(p => p.Name == varName);
+            property = properties.First(p => string.Equals(p.Name, varName, StringComparison.OrdinalIgnoreCase));
         }
         catch (InvalidOperationException)
         {
             property = null;
         }
 
-        if (varName is null || value is null || property is null)
-            return null;
+        if (property is null)
+            throw new FormatException($"{varName} is not a valid property name");
+
 
         if (property.PropertyType == typeof(int))
             property.SetValue(outobj, int.Parse(value));

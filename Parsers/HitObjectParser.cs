@@ -28,7 +28,7 @@ internal static class HitObjectParser
         else if (splitValue.Count == 5)
             objParamsString = string.Empty;
         else
-            return null;
+            throw new FormatException($"Expected at least 5 comma separated values in '{value}'");
 
 
         if (
@@ -55,7 +55,7 @@ internal static class HitObjectParser
         }
         else
         {
-            return null;
+            throw new FormatException($"Expected [int, int, int, int, int, ...] in '{value}'");
         }
 
         // make a default HitSample if it is not implicitly given in the string
@@ -99,7 +99,7 @@ internal static class HitObjectParser
     {
         var parts = ValueParser.ParseDelimitedStrings(value, ':');
 
-        // Allow only 2 parameters e.g.
+        // Allow as little as 2 parameters e.g.
         // https://osu.ppy.sh/beatmapsets/40826#taiko/174633
         if (parts.Count < 2)
             return null;
@@ -122,7 +122,7 @@ internal static class HitObjectParser
             int.TryParse(parts[1], out var additionSet3)
            )
             return new HitSample(normalSet3, additionSet3);
-        return null;
+        throw new FormatException($"HitSample: Invalid string '{value}'; expected 0, 2, 3 or 5 colon separated values");
     }
 
     public static SliderParams? ParseSliderParams(string value)
@@ -130,7 +130,7 @@ internal static class HitObjectParser
         var parts = ValueParser.ParseDelimitedStrings(value);
 
         if (parts.Count < 3)
-            return null;
+            throw new FormatException($"SliderParams: Expected at least 3 comma separated values in '{value}'");
 
         int slides;
         double length;
@@ -146,7 +146,7 @@ internal static class HitObjectParser
         // It doesn't have to contain any Points, because Aspire maps exist e.g.
         // https://osu.ppy.sh/beatmapsets/1219078#osu/2536330
         if (curvePointsStringList.Count == 0)
-            return null;
+            throw new FormatException($"SliderParams: Slider must have a specified type");
 
         var curveType = (SliderCurveType)curvePointsStringList[0][0];
         curvePointsStringList.RemoveAt(0);
@@ -160,7 +160,8 @@ internal static class HitObjectParser
         if (!int.TryParse(parts[1], out slides) ||
             !double.TryParse(parts[2], CultureInfo.InvariantCulture, out length)
            )
-            return null;
+            throw new FormatException($"SliderParams: Expected [int, double] in '{parts[1] + "," + parts[2]}'");
+
 
         // edgeSounds and edgeSets appear to be optional (not mentioned in docs)
         // tested on Okaerinasai Azer set
@@ -185,12 +186,12 @@ internal static class HitObjectParser
         var parts = ValueParser.ParseDelimitedStrings(value);
 
         if (parts.Count != 1)
-            return null;
+            throw new FormatException($"SpinnerParams: Expected singular value in '{value}'");
 
         if (int.TryParse(parts[0], out var endTime)
            )
             return new SpinnerParams(endTime);
-        return null;
+        throw new FormatException($"SpinnerParams: Expected int value at '{value}'");
     }
 
     public static HoldParams? ParseHoldParams(string value)
@@ -198,11 +199,11 @@ internal static class HitObjectParser
         var parts = ValueParser.ParseDelimitedStrings(value);
 
         if (parts.Count != 1)
-            return null;
+            throw new FormatException($"HoldParams: Expected singular value in '{value}'");
 
         if (int.TryParse(parts[0], out var endTime)
            )
             return new HoldParams(endTime);
-        return null;
+        throw new FormatException($"HoldParams: Expected int value at '{value}'");
     }
 }

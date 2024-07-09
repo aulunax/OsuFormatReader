@@ -77,7 +77,7 @@ internal static class ValueParser
         var rgb = ParseDelimitedIntegers(value);
         if (rgb.Count == 3)
             return new Colour(rgb[0], rgb[1], rgb[2]);
-        throw new FormatException($"Unable to parse '{value}' as an 3 comma-separated integer values.");
+        throw new FormatException($"Colour: Unable to parse '{value}' as an 3 comma-separated integer values");
     }
 
 
@@ -94,10 +94,13 @@ internal static class ValueParser
 
 
         if ((formatVersion >= 6 && parts.Count != 8) ||
-            (formatVersion == 5 && parts.Count != 7) ||
-            (formatVersion == 4 && parts.Count != 6) ||
+            (formatVersion == 5 && (parts.Count < 6 && parts.Count > 8)) ||
+            (formatVersion == 4 && (parts.Count != 6 && parts.Count != 5)) ||
             (formatVersion <= 3 && parts.Count != 2))
-            return null;
+        {
+            throw new FormatException(
+                $"TimingPoint: Incorrect number of comma separated values in '{value}' for format version '{formatVersion}'");
+        }
 
         double time;
         double beatLength;
@@ -116,23 +119,31 @@ internal static class ValueParser
             if (formatVersion >= 4)
                 if (!int.TryParse(parts[2], out meter) ||
                     !int.TryParse(parts[3], out sampleSet) ||
-                    !int.TryParse(parts[4], out sampleIndex) ||
-                    !int.TryParse(parts[5], out volume))
-                    return null;
+                    !int.TryParse(parts[4], out sampleIndex))
+                    throw new FormatException(
+                        $"TimingPoint: Expected [int, int, int, int, int(, int)] in '{value}' for format version '{formatVersion}");
 
-            if (formatVersion >= 5)
+            if (parts.Count == 6)
+                if (!int.TryParse(parts[5], out volume))
+                    throw new FormatException(
+                        $"TimingPoint: Expected [int, int, int, int, int(, int)] in '{value}' for format version '{formatVersion}");
+
+            if (parts.Count == 7)
                 if (!int.TryParse(parts[6], out uninherited))
-                    return null;
+                    throw new FormatException(
+                        $"TimingPoint: Expected [int, int, int, int, int, int, int/bool] in '{value}' for format version '{formatVersion}");
 
-            if (formatVersion >= 6)
+            if (parts.Count == 8)
                 if (!int.TryParse(parts[7], out effects))
-                    return null;
+                    throw new FormatException(
+                        $"TimingPoint: Expected [int, int, int, int, int, int, int/bool, int] in '{value}' for format version '{formatVersion}");
 
             return new TimingPoint((int)time, beatLength, meter, sampleSet, sampleIndex, volume, uninherited != 0,
                 (Effects)effects);
         }
 
-        return null;
+        throw new FormatException(
+            $"TimingPoint: Expected [double, double] in '{value}' for format version '{formatVersion}");
     }
 
 

@@ -12,6 +12,11 @@ internal static class EventParser
         IEvent? returnEvent;
         var eventInfo = ValueParser.ParseDelimitedStrings(value, 3);
         EventType type;
+
+        if (eventInfo.Count < 3)
+            throw new FormatException(
+                $"Event requires at least 3 comma separated values; {eventInfo.Count} were given");
+
         if (int.TryParse(eventInfo[0], out var intType))
             type = EventTypeExtensions.IntToEventType(intType);
         else
@@ -54,7 +59,8 @@ internal static class EventParser
         if (eventParams.Count == 1)
             return new BackgroundsEventParams(eventParams[0]);
 
-        if (int.TryParse(eventParams[1], out var xOffset) && int.TryParse(eventParams[2], out var yOffset))
+        if (eventParams.Count == 3 && int.TryParse(eventParams[1], out var xOffset) &&
+            int.TryParse(eventParams[2], out var yOffset))
             return new BackgroundsEventParams(eventParams[0], xOffset, yOffset);
         throw new FormatException("BackgroundsEventParams could not be parsed as [string, int, int]");
     }
@@ -66,7 +72,8 @@ internal static class EventParser
         if (eventParams.Count == 1)
             return new VideosEventParams(eventParams[0]);
 
-        if (int.TryParse(eventParams[1], out var xOffset) && int.TryParse(eventParams[2], out var yOffset))
+        if (eventParams.Count == 3 && int.TryParse(eventParams[1], out var xOffset) &&
+            int.TryParse(eventParams[2], out var yOffset))
             return new VideosEventParams(eventParams[0], xOffset, yOffset);
         throw new FormatException("VideosEventParams could not be parsed as [string, int, int]");
     }

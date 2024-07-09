@@ -25,7 +25,7 @@ public class TimingPoints
             outobj = new TimingPoints();
 
         reader.ReadUntilSection(SectionType.TimingPoints);
-        
+
         while (!reader.IsAtEnd && reader.SectionType == SectionType.TimingPoints)
         {
             var line = reader.ReadParsedLine();
@@ -33,12 +33,19 @@ public class TimingPoints
             if (line is null)
                 continue;
 
-            var newTimingPoint = ValueParser.ParseTimingPoint(line, reader.FormatVersion);
+            try
+            {
+                var newTimingPoint = ValueParser.ParseTimingPoint(line, reader.FormatVersion);
 
-            if (newTimingPoint is null)
-                continue;
+                if (newTimingPoint is null)
+                    continue;
 
-            outobj.AddTimingPoint(newTimingPoint);
+                outobj.AddTimingPoint(newTimingPoint);
+            }
+            catch (FormatException e)
+            {
+                reader.ReportParserError(e.Message);
+            }
         }
 
         return outobj;

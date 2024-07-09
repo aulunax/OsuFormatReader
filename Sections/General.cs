@@ -26,15 +26,53 @@ public class General
     public bool WidescreenStoryboard { get; set; } = false;
     public bool SamplesMatchPlaybackRate { get; set; } = false;
 
+    /// <summary>
+    /// Used for transfer of <see cref="Editor"/> section key value pairs to actual Editor object.
+    /// Necessary because of older .osu format versions.
+    /// </summary>
+    internal Editor? InternalEditor { get; private set; } = null;
+
     public static General Read(OsuFormatStreamReader reader, General? outobj = null)
     {
         if (outobj is null)
             outobj = new General();
 
         reader.ReadUntilSection(SectionType.General);
-        
+
         while (!reader.IsAtEnd && reader.SectionType == SectionType.General)
-            KeyValueParser.ReadAndUpdateProperty(reader, outobj);
+        {
+            string? value;
+            var key = reader.TryReadKeyValuePair(out value);
+
+            if (key == null || value == null)
+                continue;
+
+            if (key == "EditorDistanceSpacing" || key == "EditorBookmarks")
+            {
+                if (outobj.InternalEditor is null)
+                    outobj.InternalEditor = new Editor();
+
+                try
+                {
+                    KeyValueParser.UpdateProperty(key.Replace("Editor", ""), value, outobj.InternalEditor);
+                }
+                catch (FormatException e)
+                {
+                    reader.ReportParserError(e.Message);
+                }
+            }
+            else
+            {
+                try
+                {
+                    KeyValueParser.UpdateProperty(key, value, outobj);
+                }
+                catch (FormatException e)
+                {
+                    reader.ReportParserError(e.Message);
+                }
+            }
+        }
 
         return outobj;
     }

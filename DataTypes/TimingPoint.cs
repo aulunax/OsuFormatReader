@@ -23,7 +23,7 @@ public class TimingPoint
     public int volume { get; set; }
     public bool uninherited { get; set; }
     public Effects effects { get; set; }
-    
+
     public TimingPoint()
     {
     }

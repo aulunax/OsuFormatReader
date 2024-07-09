@@ -32,7 +32,7 @@ public class Metadata
             outobj = new Metadata();
 
         reader.ReadUntilSection(SectionType.Metadata);
-        
+
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Metadata)
             KeyValueParser.ReadAndUpdateProperty(reader, outobj);
 

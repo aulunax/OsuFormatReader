@@ -10,8 +10,8 @@ public class Colours
     private static readonly Regex comboColourRegex = new(@"^Combo(\d+)$");
 
     private readonly Dictionary<int, Colour> _comboColoursDict = new();
-    public Colour SliderBorder = null;
-    public Colour SliderTrackOverride = null;
+    public Colour SliderBorder { get; set; } = null;
+    public Colour SliderTrackOverride { get; set; } = null;
 
     public Colour GetComboColour(int index)
     {
@@ -34,7 +34,7 @@ public class Colours
             outobj = new Colours();
 
         reader.ReadUntilSection(SectionType.Colours);
-        
+
         while (!reader.IsAtEnd && reader.SectionType == SectionType.Colours)
         {
             string? value;
@@ -43,16 +43,41 @@ public class Colours
             if (key == null || value == null)
                 continue;
 
-            if (key == "SliderTrackOverride" || key == "SliderBorder")
+            if (string.Equals(key, "SliderTrackOverride", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(key, "SliderBorder", StringComparison.OrdinalIgnoreCase))
             {
-                KeyValueParser.UpdateProperty(key, value, outobj);
+                try
+                {
+                    KeyValueParser.UpdateProperty(key, value, outobj);
+                }
+                catch (FormatException e)
+                {
+                    reader.ReportParserError(e.Message);
+                }
             }
             else if (comboColourRegex.IsMatch(key))
             {
                 var match = comboColourRegex.Match(key);
                 var numberStr = match.Groups[1].Value;
-                var number = int.Parse(numberStr);
-                outobj.AddOrReplaceComboColour(number, ValueParser.ParseColour(value));
+                if (int.TryParse(numberStr, out int number))
+                {
+                    try
+                    {
+                        outobj.AddOrReplaceComboColour(number, ValueParser.ParseColour(value));
+                    }
+                    catch (FormatException e)
+                    {
+                        reader.ReportParserError(e.Message);
+                    }
+                }
+                else
+                {
+                    reader.ReportParserError($"Invalid combo number in string \"{key}\"");
+                }
+            }
+            else
+            {
+                reader.ReportParserError($"Invalid key string \"{key}\"");
             }
         }
 

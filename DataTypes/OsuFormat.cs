@@ -117,6 +117,7 @@ public class OsuFormat
         {
             case SectionType.General:
                 outobj.General = General.Read(reader);
+                outobj.Editor = outobj.General.InternalEditor is not null ? outobj.General.InternalEditor : null;
                 break;
             case SectionType.Editor:
                 outobj.Editor = Editor.Read(reader);

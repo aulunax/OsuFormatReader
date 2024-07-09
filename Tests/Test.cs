@@ -27,7 +27,7 @@ internal class Test
 
     private static void ParallelMain()
     {
-        var filePaths = GetOsuFiles("Insert path here");
+        var filePaths = GetOsuFiles("D:\\osu full copy\\osu!\\Songs");
         var osuFormats = new ConcurrentBag<OsuFormat>();
         var timeSpans = new ConcurrentBag<TimeSpan>();
 
@@ -54,18 +54,18 @@ internal class Test
                     timeTaken.Milliseconds);
 
                 osuFormats.Add(osuFormat);
-                Console.WriteLine(osuFormat.Metadata.Artist + " - " + osuFormat.Metadata.Title + " [" +
-                                  osuFormat.Metadata.Version + "]");
-                Console.WriteLine("Beatmapset ID: " + osuFormat.Metadata.BeatmapSetID);
-                Console.WriteLine("Beatmap ID: " + osuFormat.Metadata.BeatmapID);
+                // Console.WriteLine(osuFormat.Metadata.Artist + " - " + osuFormat.Metadata.Title + " [" +
+                //                   osuFormat.Metadata.Version + "]");
+                // Console.WriteLine("Beatmapset ID: " + osuFormat.Metadata.BeatmapSetID);
+                // Console.WriteLine("Beatmap ID: " + osuFormat.Metadata.BeatmapID);
                 // Console.WriteLine("Circles: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.HitCircle)));
                 // Console.WriteLine("Sliders: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.Slider)));
                 // Console.WriteLine("Spinners: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.Spinner)));
 
-                Console.WriteLine("Time taken: " + formattedTime);
+                // Console.WriteLine("Time taken: " + formattedTime);
 
                 var completed = Interlocked.Increment(ref processedFiles);
-                Console.WriteLine("Completed: " + completed + "/" + totalFiles + "\n");
+                // Console.WriteLine("Completed: " + completed + "/" + totalFiles + "\n");
             }
         });
 
@@ -80,7 +80,7 @@ internal class Test
 
     public static void Main()
     {
-        var filePaths = GetOsuFiles("E:\\osu!\\Songs\\43 Beck - Timebomb");
+        var filePaths = GetOsuFiles("D:\\osu full copy\\osu!\\Songs");
         var osuFormats = new List<OsuFormat>();
         var timeSpans = new List<TimeSpan>();
 
@@ -108,16 +108,16 @@ internal class Test
                     timeTaken.Milliseconds);
 
                 osuFormats.Add(osuFormat);
-                Console.WriteLine(osuFormat.Metadata.Artist + " - " + osuFormat.Metadata.Title + " [" +
-                                  osuFormat.Metadata.Version + "]");
-                Console.WriteLine("Beatmapset ID: " + osuFormat.Metadata.BeatmapSetID);
-                Console.WriteLine("Beatmap ID: " + osuFormat.Metadata.BeatmapID);
-                Console.WriteLine("Circles: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.HitCircle)));
-                Console.WriteLine("Sliders: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.Slider)));
-                Console.WriteLine("Spinners: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.Spinner)));
+                // Console.WriteLine(osuFormat.Metadata.Artist + " - " + osuFormat.Metadata.Title + " [" +
+                //                   osuFormat.Metadata.Version + "]");
+                // Console.WriteLine("Beatmapset ID: " + osuFormat.Metadata.BeatmapSetID);
+                // Console.WriteLine("Beatmap ID: " + osuFormat.Metadata.BeatmapID);
+                // Console.WriteLine("Circles: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.HitCircle)));
+                // Console.WriteLine("Sliders: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.Slider)));
+                // Console.WriteLine("Spinners: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.Spinner)));
 
-                Console.WriteLine("Time taken: " + formattedTime);
-                Console.WriteLine("Completed: " + processedFiles + "/" + filePaths.Count + "\n");
+                //Console.WriteLine("Time taken: " + formattedTime);
+                Console.WriteLine("Completed: " + processedFiles + "/" + filePaths.Count);
             }
         }
 

@@ -66,11 +66,11 @@ public class OsuFormatStreamReader : IDisposable
         }
 
         CurrentLine++;
-        line = line.Trim();
 
-        return line;
+        return line.Trim();
+        ;
     }
-    
+
     /// <summary>
     /// Reads the next parsed line from the stream.
     /// </summary>
@@ -88,7 +88,12 @@ public class OsuFormatStreamReader : IDisposable
     {
         _parser.ReadUntilFirstSection(this);
     }
-    
+
+
+    /// <summary>
+    /// Reads from stream until reaching a section specified by <see cref="sectionType"/>, or EOF.
+    /// </summary>
+    /// <param name="sectionType"><see cref="sectionType"/> reader reads to.</param>
     internal void ReadUntilSection(SectionType sectionType)
     {
         while (!IsAtEnd && SectionType != sectionType)
@@ -97,7 +102,22 @@ public class OsuFormatStreamReader : IDisposable
             _parser.ParseLine(line);
         }
     }
-    
+
+    /// <summary>
+    /// Reports parsing error at current line with given message.
+    /// </summary>
+    /// <param name="message">Contains error message to display.</param>
+    internal void ReportParserError(string message)
+    {
+        if (_reader.BaseStream is FileStream fileStream)
+        {
+            _parser.ReportError(message, CurrentLine, fileStream.Name);
+            return;
+        }
+
+        _parser.ReportError(message, CurrentLine);
+    }
+
     public void Dispose()
     {
         _reader.Dispose();

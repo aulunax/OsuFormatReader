@@ -23,7 +23,7 @@ public class HitObjects
     {
         if (outobj is null)
             outobj = new HitObjects();
-        
+
         reader.ReadUntilSection(SectionType.HitObjects);
 
         while (!reader.IsAtEnd && reader.SectionType == SectionType.HitObjects)
@@ -33,12 +33,22 @@ public class HitObjects
             if (line is null)
                 continue;
 
-            var newHitObject = HitObjectParser.ParseHitObject(line);
+            try
+            {
+                var newHitObject = HitObjectParser.ParseHitObject(line);
 
-            if (newHitObject is null)
-                continue;
+                if (newHitObject is null)
+                {
+                    reader.ReportParserError("Invalid HitObject");
+                    continue;
+                }
 
-            outobj.AddHitObject(newHitObject);
+                outobj.AddHitObject(newHitObject);
+            }
+            catch (FormatException e)
+            {
+                reader.ReportParserError(e.Message);
+            }
         }
 
         return outobj;
