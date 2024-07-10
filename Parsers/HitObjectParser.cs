@@ -134,13 +134,13 @@ internal static class HitObjectParser
 
         int slides;
         double length;
-        var curvePoints = new List<Point>();
-        var edgeSounds = new List<HitSound>();
-        var edgeSets = new List<EdgeSet>();
-
-
+        
         var curvePointsStringList = ValueParser.ParseDelimitedStrings(parts[0], '|');
-
+        
+        var curvePoints = new List<Point>(parts.Count - 1);
+        List<HitSound> edgeSounds = new List<HitSound>();
+        List<EdgeSet> edgeSets = new List<EdgeSet>();
+        
         // curvePointsStringList also contains the character corresponding to the type of the slider curve,
         // so the list needs to have at least 1 element.
         // It doesn't have to contain any Points, because Aspire maps exist e.g.
@@ -167,6 +167,9 @@ internal static class HitObjectParser
         // tested on Okaerinasai Azer set
         if (parts.Count == 5)
         {
+            edgeSounds.Capacity = parts[3].Length;
+            edgeSets.Capacity = parts[4].Length;
+            
             var edgeSoundsIntegerList = ValueParser.ParseDelimitedIntegers(parts[3], '|');
             foreach (var edgeSound in edgeSoundsIntegerList) edgeSounds.Add((HitSound)edgeSound);
 

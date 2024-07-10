@@ -91,15 +91,16 @@ public class OsuFormat
     /// </summary>
     /// <param name="reader">The reader to read the .osu  format file from.</param>
     /// <param name="outobj">An optional existing instance of <see cref="OsuFormat"/> to populate. If null, a new instance will be created.</param>
+    /// <param name="mask">Defines which sections of the format should be read.</param>
     /// <returns>The populated <see cref="OsuFormat"/> object.</returns>
-    public static OsuFormat Read(OsuFormatStreamReader reader, OsuFormat? outobj = null)
+    public static OsuFormat Read(OsuFormatStreamReader reader, OsuFormat? outobj = null, SectionType mask = SectionType.All)
     {
         if (outobj is null)
             outobj = new OsuFormat();
 
-        reader.ReadUntilFirstSection();
+        reader.ReadUntilNextSection();
         outobj.FormatVersion = reader.FormatVersion;
-        while (!reader.IsAtEnd) ReadSection(reader, reader.SectionType, outobj);
+        while (!reader.IsAtEnd) ReadSection(reader, reader.SectionType, outobj, mask);
 
 
         return outobj;
@@ -111,33 +112,73 @@ public class OsuFormat
     /// <param name="reader">The reader to read the section from.</param>
     /// <param name="sectionType">The <see cref="SectionType"/> type of the section being read.</param>
     /// <param name="outobj">The <see cref="OsuFormat"/> object to populate.</param>
-    private static void ReadSection(OsuFormatStreamReader reader, SectionType sectionType, OsuFormat outobj)
+    private static void ReadSection(OsuFormatStreamReader reader, SectionType sectionType, OsuFormat outobj, SectionType mask)
     {
         switch (sectionType)
         {
             case SectionType.General:
+                if (!mask.HasFlag(SectionType.General))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.General = General.Read(reader);
                 outobj.Editor = outobj.General.InternalEditor is not null ? outobj.General.InternalEditor : null;
                 break;
             case SectionType.Editor:
+                if (!mask.HasFlag(SectionType.Editor))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.Editor = Editor.Read(reader);
                 break;
             case SectionType.Metadata:
+                if (!mask.HasFlag(SectionType.Metadata))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.Metadata = Metadata.Read(reader);
                 break;
             case SectionType.Difficulty:
+                if (!mask.HasFlag(SectionType.Difficulty))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.Difficulty = Difficulty.Read(reader);
                 break;
             case SectionType.Events:
+                if (!mask.HasFlag(SectionType.Events))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.Events = Events.Read(reader);
                 break;
             case SectionType.TimingPoints:
+                if (!mask.HasFlag(SectionType.TimingPoints))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.TimingPoints = TimingPoints.Read(reader);
                 break;
             case SectionType.Colours:
+                if (!mask.HasFlag(SectionType.Colours))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.Colours = Colours.Read(reader);
                 break;
             case SectionType.HitObjects:
+                if (!mask.HasFlag(SectionType.HitObjects))
+                {
+                    reader.ReadUntilNextSection();
+                    break;
+                }
                 outobj.HitObjects = HitObjects.Read(reader);
                 break;
             default:

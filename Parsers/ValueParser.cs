@@ -15,8 +15,9 @@ internal static class ValueParser
     /// <exception cref="FormatException">A substring couldn't be parsed as an integer.</exception>
     public static List<int> ParseDelimitedIntegers(string value, char delimiter = ',')
     {
-        var result = new List<int>();
         var parts = value.Split(delimiter);
+        var result = new List<int>(parts.Length);
+
 
         foreach (var part in parts)
             if (part == string.Empty)
@@ -39,12 +40,8 @@ internal static class ValueParser
     /// <returns>List of substrings.</returns>
     public static List<string> ParseDelimitedStrings(string value, char delimiter = ',')
     {
-        var result = new List<string>();
         var parts = value.Split(delimiter);
-
-        foreach (var part in parts) result.Add(part);
-
-        return result;
+        return parts.ToList();
     }
 
     /// <summary>
@@ -57,12 +54,8 @@ internal static class ValueParser
     /// <returns>List of substrings.</returns>
     public static List<string> ParseDelimitedStrings(string value, int count, char delimiter = ',')
     {
-        var result = new List<string>();
         var parts = value.Split([delimiter], count);
-
-        foreach (var part in parts) result.Add(part);
-
-        return result;
+        return parts.ToList();
     }
 
     /// <summary>
@@ -111,7 +104,7 @@ internal static class ValueParser
         var uninherited = 1;
         var effects = 0;
 
-        // time as double is allowed i guess e.g.
+        // time as double is allowed e.g.
         // https://osu.ppy.sh/beatmapsets/107763#osu/282251
         if (double.TryParse(parts[0], CultureInfo.InvariantCulture, out time) &&
             double.TryParse(parts[1], CultureInfo.InvariantCulture, out beatLength))
@@ -168,4 +161,5 @@ internal static class ValueParser
             last = input.Substring(lastCommaIndex + 1);
         }
     }
+    
 }

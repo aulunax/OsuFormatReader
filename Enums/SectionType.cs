@@ -1,16 +1,18 @@
 ﻿namespace OsuFormatReader.Enums;
 
+[Flags]
 public enum SectionType : byte
 {
-    None,
-    General,
-    Editor,
-    Metadata,
-    Difficulty,
-    Events,
-    TimingPoints,
-    Colours,
-    HitObjects
+    None = 0,
+    General = 1 << 0,
+    Editor = 1 << 1,
+    Metadata = 1 << 2,
+    Difficulty = 1 << 3,
+    Events = 1 << 4,
+    TimingPoints = 1 << 5,
+    Colours = 1 << 6,
+    HitObjects = 1 << 7,
+    All = General | Editor | Metadata | Difficulty | Events | TimingPoints | Colours | HitObjects
 }
 
 public static class SectionTypeExtensions

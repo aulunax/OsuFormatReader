@@ -11,13 +11,15 @@ internal class OsuFormatParser
 
 
     /// <summary>
-    ///     Version of the osu format of the file being read. <br />
-    ///     Value of -1 means that reader was not able to read the version number properly.
+    /// Version of the osu format of the file being read.
     /// </summary>
+    /// <remarks>
+    /// Value of -1 means that reader was not able to read the version number properly.
+    /// </remarks>
     internal int FormatVersion { get; private set; }
 
     /// <summary>
-    /// Section being currently parsed/read by the parser.
+    /// <see cref="SectionType"/> of the section being currently parsed/read by the parser.
     /// </summary>
     internal SectionType SectionType { get; private set; } = SectionType.None;
 
@@ -26,7 +28,7 @@ internal class OsuFormatParser
     /// Also ignores comments made with double slash.
     /// </summary>
     /// <param name="line">The line to parse.</param>
-    /// <returns>The parsed line, or null if the line is a comment or empty.</returns>
+    /// <returns>String containing parsed line, or null if the line is a comment, empty or starts a section.</returns>
     internal string? ParseLine(string? line)
     {
         if (line is null || line == string.Empty)
@@ -95,12 +97,13 @@ internal class OsuFormatParser
     /// Reads until the first section is found.
     /// </summary>
     /// <param name="reader">The <see cref="OsuFormatStreamReader"/> instance.</param>
-    internal void ReadUntilFirstSection(OsuFormatStreamReader reader)
+    internal void ReadUntilNextSection(OsuFormatStreamReader reader)
     {
-        while (SectionType == SectionType.None)
+        SectionType = SectionType.None;
+        while (!reader.IsAtEnd && SectionType == SectionType.None)
         {
             string? line = reader.ReadParsedLine();
-            if (line is null)
+            if (line is null || reader.CurrentLine > 1)
                 continue;
 
             Match match = VersionRegex.Match(line);
@@ -122,6 +125,6 @@ internal class OsuFormatParser
     internal void ReportError(string message, int currentLine, string filename)
     {
         Console.WriteLine(
-            $"In filestream \"{filename}\": Parse error: {message} in section {SectionType}: at line {currentLine}.");
+            $"Parse error: In filestream \"{filename}\": {message} in section {SectionType}: at line {currentLine}.");
     }
 }

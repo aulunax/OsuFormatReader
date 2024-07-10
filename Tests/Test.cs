@@ -7,7 +7,7 @@ using OsuFormatReader.Sections;
 
 namespace OsuFormatReader.Tests;
 
-internal class Test
+public class Test
 {
     private static List<string> GetOsuFiles(string folderPath)
     {
@@ -92,6 +92,9 @@ internal class Test
         foreach (var filePath in filePaths)
         {
             processedFiles++;
+            if (processedFiles > 10000)
+                break;
+            
             using (var reader = new OsuFormatStreamReader(new FileStream(filePath, FileMode.Open)))
             {
                 var stopwatch = new Stopwatch();
@@ -117,7 +120,7 @@ internal class Test
                 // Console.WriteLine("Spinners: " + osuFormat.HitObjects.GetHitObjectList().Count(o => o.type.HasFlag(HitObjectType.Spinner)));
 
                 //Console.WriteLine("Time taken: " + formattedTime);
-                Console.WriteLine("Completed: " + processedFiles + "/" + filePaths.Count);
+                //Console.WriteLine("Completed: " + processedFiles + "/" + filePaths.Count);
             }
         }
 

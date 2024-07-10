@@ -68,7 +68,6 @@ public class OsuFormatStreamReader : IDisposable
         CurrentLine++;
 
         return line.Trim();
-        ;
     }
 
     /// <summary>
@@ -84,9 +83,9 @@ public class OsuFormatStreamReader : IDisposable
     /// <summary>
     /// Reads from stream until reaching a valid section, or EOF.
     /// </summary>
-    internal void ReadUntilFirstSection()
+    internal void ReadUntilNextSection()
     {
-        _parser.ReadUntilFirstSection(this);
+        _parser.ReadUntilNextSection(this);
     }
 
 
