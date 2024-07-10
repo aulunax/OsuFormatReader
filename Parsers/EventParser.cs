@@ -57,11 +57,11 @@ internal static class EventParser
         var eventParams = ValueParser.ParseDelimitedStrings(value, 3);
 
         if (eventParams.Count == 1)
-            return new BackgroundsEventParams(eventParams[0]);
+            return new BackgroundsEventParams(eventParams[0].Substring(1, eventParams[0].Length-2));
 
         if (eventParams.Count == 3 && int.TryParse(eventParams[1], out var xOffset) &&
             int.TryParse(eventParams[2], out var yOffset))
-            return new BackgroundsEventParams(eventParams[0], xOffset, yOffset);
+            return new BackgroundsEventParams(eventParams[0].Substring(1, eventParams[0].Length-2), xOffset, yOffset);
         throw new FormatException("BackgroundsEventParams could not be parsed as [string, int, int]");
     }
 
@@ -70,11 +70,11 @@ internal static class EventParser
         var eventParams = ValueParser.ParseDelimitedStrings(value, 3);
 
         if (eventParams.Count == 1)
-            return new VideosEventParams(eventParams[0]);
+            return new VideosEventParams(eventParams[0].Substring(1, eventParams[0].Length-2));
 
         if (eventParams.Count == 3 && int.TryParse(eventParams[1], out var xOffset) &&
             int.TryParse(eventParams[2], out var yOffset))
-            return new VideosEventParams(eventParams[0], xOffset, yOffset);
+            return new VideosEventParams(eventParams[0].Substring(1, eventParams[0].Length-2), xOffset, yOffset);
         throw new FormatException("VideosEventParams could not be parsed as [string, int, int]");
     }
 
